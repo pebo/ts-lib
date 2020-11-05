@@ -1,0 +1,27 @@
+{
+  "name": "ts-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -fr ./dist",
+    "start": "node ./dist/src/server.js",
+    "test": "npm run build && jest ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pebo/ts-lib.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pebo/ts-lib/issues"
+  },
+  "homepage": "https://github.com/pebo/ts-lib#readme",
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.3",
+    "typescript": "^4.0.5"
+  }
+}
