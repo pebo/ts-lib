@@ -3,7 +3,8 @@ export enum TimeUnit {
   day = 'D',
   hour = 'H',
   minute = 'M',
-  second = 'S'
+  second = 'S',
+  milliSecond = 'MS'
 }
 
 export class Duration {
@@ -30,7 +31,7 @@ export class Duration {
    * @param str the duration string, eg. 1H or 60M
    */
   static parse(str: string): Duration {
-    const match = str.match(/(\d+)([DHMSdhms])/);
+    const match = str.match(/(\d+)(MS|ms|[DHMSdhms])/);
     if (!match) {
       throw new Error(`Failed to parse duration string: '${str}'`);
     }
@@ -41,6 +42,7 @@ export class Duration {
       case TimeUnit.hour: return Duration.ofHours(duration);
       case TimeUnit.minute: return Duration.ofMinutes(duration);
       case TimeUnit.second: return Duration.ofSeconds(duration);
+      case TimeUnit.milliSecond: return Duration.ofMilliSeconds(duration);
       default: throw new Error(`Failed to parse duration string: '${str}'`);
     }
   }
@@ -59,5 +61,9 @@ export class Duration {
 
   static ofSeconds(duration: number): Duration {
     return new Duration(duration * 1000);
+  }
+
+  static ofMilliSeconds(duration: number): Duration {
+    return new Duration(duration);
   }
 }
