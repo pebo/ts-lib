@@ -13,11 +13,11 @@ test("duration parse", async () => {
   const twoHours = Duration.parse("2H");
   expect(twoHours.millis()).toBe(2 * 60 * 60 * 1000);
 
-  const fourMinutes = Duration.parse("4M");
-  expect(fourMinutes.millis()).toBe(4 * 60 * 1000);
+  const fourtyMinutes = Duration.parse("40M");
+  expect(fourtyMinutes.millis()).toBe(40 * 60 * 1000);
 
-  const fiveSeconds = Duration.parse("5S");
-  expect(fiveSeconds.millis()).toBe(5 * 1000);
+  const oneHundredSeconds = Duration.parse("100S");
+  expect(oneHundredSeconds.millis()).toBe(100 * 1000);
 
   const oneDate = Duration.parse("1D");
   expect(oneDate.millis()).toBe(86400 * 1000);

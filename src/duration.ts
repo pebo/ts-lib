@@ -13,7 +13,7 @@ export class Duration {
    *
    * @param duration duration in milliseconds
    */
-  constructor(duration: number) {
+  private constructor(duration: number) {
     this.duration = duration;
   }
 
@@ -30,7 +30,7 @@ export class Duration {
    * @param str the duration string, eg. 1H or 60M
    */
   static parse(str: string): Duration {
-    const match = str.match(/(\d)+([DHMSdhms])/);
+    const match = str.match(/(\d+)([DHMSdhms])/);
     if (!match) {
       throw new Error(`Failed to parse duration string: '${str}'`);
     }
