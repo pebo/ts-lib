@@ -56,11 +56,11 @@ export class Duration {
   }
 
   static ofMinutes(duration: number): Duration {
-    return Duration.ofSeconds(duration * 60)
+    return Duration.ofSeconds(duration * 60);
   }
 
   static ofSeconds(duration: number): Duration {
-    return new Duration(duration * 1000);
+    return Duration.ofMilliSeconds(duration * 1000);
   }
 
   static ofMilliSeconds(duration: number): Duration {
