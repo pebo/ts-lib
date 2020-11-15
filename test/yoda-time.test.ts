@@ -1,4 +1,4 @@
-import { Duration } from "../src/duration";
+import { Duration } from "../src/yoda-time";
 
 test("duration equality", async () => {
   const h = Duration.ofHours(2);
@@ -10,7 +10,6 @@ test("duration equality", async () => {
 });
 
 test("duration parse", async () => {
-  /*
   const twoHours = Duration.parse("2H");
   expect(twoHours.millis()).toBe(2 * 60 * 60 * 1000);
 
@@ -22,13 +21,19 @@ test("duration parse", async () => {
 
   const oneDay = Duration.parse("1D");
   expect(oneDay.millis()).toBe(86400 * 1000);
-  */
 
   const twenthyMs = Duration.parse("20ms");
   expect(twenthyMs.millis()).toBe(20);
 });
 
+
+test("compare durations", async () => {
+  expect(Duration.ofHours(2).isGreaterThan(Duration.ofMinutes(2))).toBe(true);
+  expect(Duration.ofMinutes(22).isLessThan(Duration.ofMinutes(23))).toBe(true);
+});
+
 test("duration parse bad input", async () => {
   expect(() => Duration.parse("1x")).toThrow(Error);
   expect(() => Duration.parse("H")).toThrow(Error);
+  expect(() => Duration.parse("2")).toThrow(Error);
 });
