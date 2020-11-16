@@ -1,4 +1,4 @@
-import { Duration } from "../src/yoda-time";
+import { Duration, TimeUnit } from "../src/yoda-time";
 
 test("duration equality", async () => {
   const h = Duration.ofHours(2);
@@ -7,6 +7,11 @@ test("duration equality", async () => {
   expect(h).toEqual(m);
   expect(s).toEqual(h);
   expect(Duration.ofDays(2)).toEqual(Duration.ofHours(48));
+  expect(Duration.ofMillis(3000)).toEqual(Duration.ofSeconds(3));
+});
+
+test("of timeunit", async () => {
+  expect(Duration.ofUnit(48, TimeUnit.hours)).toEqual(Duration.ofDays(2));
 });
 
 test("duration parse", async () => {
