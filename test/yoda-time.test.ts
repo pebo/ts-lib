@@ -31,6 +31,11 @@ test("duration parse", async () => {
   expect(twenthyMs.millis()).toBe(20);
 });
 
+test("duration parse negative", async () => {
+  const minusFourtyMinutes = Duration.parse("-40M");
+  expect(minusFourtyMinutes.millis()).toBe(-40 * 60 * 1000);
+});
+
 
 test("compare durations", async () => {
   expect(Duration.ofHours(2).isGreaterThan(Duration.ofMinutes(2))).toBe(true);

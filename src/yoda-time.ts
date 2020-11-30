@@ -57,7 +57,7 @@ export class Duration {
    * @param str the duration string, eg. 1h or 60m
    */
   static parse(str: string): Duration {
-    const match = str.match(/(\d+)(MS|ms|[DHMSdhms])/);
+    const match = str.match(/^(-?\d+)(MS|ms|[DHMSdhms])/);
     if (!match) {
       throw new Error(`Failed to parse duration string: '${str}'`);
     }
