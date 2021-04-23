@@ -1,4 +1,4 @@
-import { singleInFlightFn } from "../src/concurrent";
+import { singleInFlightFn, ExpiringValue, SingleInFlightCachingValueProvider } from "../src/concurrent";
 
 let counter = 0;
 async function slowFn(): Promise<number> {
@@ -29,6 +29,11 @@ async function expectError(p: Promise<any>) {
   }
 }
 
+beforeEach( () => {
+  counter = 0;
+  hasFailed = false;
+});
+
 test("slowFn should be called once", async () => {
   const fun = singleInFlightFn(slowFn);
 
@@ -56,4 +61,39 @@ test("failOnce should be called once", async () => {
   // no in flight calls
   const thirdResult = await fun();
   expect(thirdResult).toBe(1);
+});
+
+
+
+
+
+test("CachingValueProvider", async () => {
+  const delay = (period: number) => new Promise((resolve) => setTimeout(resolve, period));
+
+  const fetchTime = 50;
+  const expiryOffset = 500;
+  let value = '';
+  const valueFetcher = async () : Promise<ExpiringValue<string>>=> {
+    await delay(fetchTime);
+    value = value + 'a';
+    return {
+      value: value,
+      expiryTime: Date.now() + expiryOffset
+    }
+  }
+
+  const prefetchPeriod = 50;
+  const tested = new SingleInFlightCachingValueProvider<string>(valueFetcher, prefetchPeriod);
+
+  const value1 = await tested.get();
+  expect(value1).toBe('a');
+  const value2 = await tested.get();
+  expect(value2).toBe('a');
+
+  await delay(expiryOffset - prefetchPeriod);
+  const valuePromise3 = tested.get();
+  const valuePromise4 = tested.get();
+
+  expect(await valuePromise3).toBe('aa');
+  expect(await valuePromise4).toBe('a');
 });
