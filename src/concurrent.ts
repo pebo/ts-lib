@@ -33,20 +33,23 @@ export interface ExpiringValue<T> {
  *
  */
 export class SingleInFlightCachingValueProvider<T> {
-  expiringValue?: ExpiringValue<T>;
-  fetchOngoing: boolean = false;
-  fetchFn: () => Promise<ExpiringValue<T>>;
+  private expiringValue?: ExpiringValue<T>;
+  private fetchOngoing: boolean = false;
+  private fetchFn: () => Promise<ExpiringValue<T>>;
 
   /**
    *
-   * @param fetchFn fn returning a value together with an expiry time
+   * @param fetchDelegateFn fn returning a value together with an expiry time
    * @param prefetchPeriod the period of time before expiry time that the value retrieval should start
    * @param timeRemaining the period of time for which a cached value must valid, e.g. to avoid using a token that will soon expire
    */
-  constructor(fetchFn: () => Promise<ExpiringValue<T>>, readonly prefetchPeriod: number, readonly timeRemaining: number = 0) {
-    this.fetchFn = singleInFlightFn(fetchFn);
+  constructor(fetchDelegateFn: () => Promise<ExpiringValue<T>>, readonly prefetchPeriod: number, readonly timeRemaining: number = 0) {
+    this.fetchFn = singleInFlightFn(fetchDelegateFn);
   }
 
+  /**
+   * Returns the current cached value or fetches a new value using the value fetch delegate.
+   */
   async get(): Promise<T> {
     // cached value absent or (soon) expired
     if (!this.expiringValue || Date.now() > (this.expiringValue.expiryTime - this.timeRemaining)) {
