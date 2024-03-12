@@ -25,7 +25,7 @@ async function expectError(p: Promise<any>) {
     await p;
     expect(true).toBe(false);
   } catch (e) {
-    expect(e.message).toMatch("Failed");
+    expect((e as Error).message).toMatch("Failed");
   }
 }
 
